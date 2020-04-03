@@ -69,6 +69,8 @@
 		.title('margin')
 		.defaultValue(10)
 
+
+
 	// Drawing function
 	// selection represents the d3 selection (svg)
 	// data is not the original set of records
@@ -79,33 +81,52 @@
 		selection
 			.attr("width", width())
 			.attr("height", height())
+			.append("g")
+
 
 		// x and y scale
 		var xScale = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
+      .domain(d3.extent(data, function(d) { return d.x; }))
       .range([ 0, width ]);
     selection.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(xScale));
 
 		var yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
+      .domain([0, d3.max(data, function(d) { return +d.y; })])
       .range([ height, 0 ]);
     selection.append("g")
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(yScale));
 
 		// let's plot the dots!
-		selection.selectAll("circle")
+		selection.append("path")
 			.data(data)
-			.enter().append("circle")
-			.attr("cx", function(d) { return xScale(x); })
-			.attr("cy", function(d) { return yScale(y); })
-			.attr("r", 5)
+			.attr("fill", "none")
+      		.attr("stroke", "steelblue")
+			.attr("stroke-width", 1.5)
+			.attr("d", d3.line()
+        		.xScale(function(d) { return xScale(d.x) })
+        		.yScale(function(d) { return yScale(d.y) })
+        		)
 
 	})
 
 
 })();
+
+
+Join Zoom Meeting
+https://us04web.zoom.us/j/273527659?pwd=QXRINUJnckZ5WkNsQmRXSnhxL0x2QT09
+
+Meeting ID: 273 527 659
+Password: 197755
+
+
+
+
+
+
+
 
 
 
